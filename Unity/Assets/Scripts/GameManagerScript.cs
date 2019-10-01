@@ -50,13 +50,11 @@ public class GameManagerScript : MonoBehaviour
     public GameObject objective;
     public GameObject wall;
     public static List<GameObject> Walls = new List<GameObject>() { };
-    public static int listSize = 0;
     public static bool isPlaying = false;
 
     public void Duplicate()
     {
         Walls.Add(Instantiate(wall, new Vector3(0, 5, 0), Quaternion.identity));
-        listSize++;
     }
 
     public void changeGamemode()
@@ -79,9 +77,10 @@ public class GameManagerScript : MonoBehaviour
     {
         SavePlayer(player.transform.position.x, player.transform.position.y, player.transform.position.z);
         SaveObjective(objective.transform.position.x, objective.transform.position.y, objective.transform.position.z);
-        for(int i =0;i<listSize;i++)
+        for(int i =0;i<Walls.Count;i++)
         {
-            SaveWall(Walls[i].transform.position.x, Walls[i].transform.position.y, Walls[i].transform.position.z, Walls[i].transform.rotation.x, Walls[i].transform.rotation.y, Walls[i].transform.rotation.z, Walls[i].transform.rotation.w);
+            if(Walls[i] != null)
+                SaveWall(Walls[i].transform.position.x, Walls[i].transform.position.y, Walls[i].transform.position.z, Walls[i].transform.rotation.x, Walls[i].transform.rotation.y, Walls[i].transform.rotation.z, Walls[i].transform.rotation.w);
         }
         SaveToFile();
     }
@@ -94,10 +93,10 @@ public class GameManagerScript : MonoBehaviour
         objective.transform.SetPositionAndRotation(new Vector3(getOX(), getOY(), getOZ()), Quaternion.identity);
         for(int i = 0;i<Walls.Count;i++)
         {
-            Destroy(Walls[i]);
+            if (Walls[i] != null)
+                Destroy(Walls[i]);
         }
         Walls.Clear();
-        listSize = getSize();
         for (int i = 0;i<getSize();i++)
         {
             Quaternion temp;
