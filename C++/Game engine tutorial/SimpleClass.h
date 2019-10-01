@@ -23,6 +23,7 @@ public:
 	float getY(int n);
 	float getZ(int n);
 	float getAngle(int n);
+	int getSize();
 private:
 	vector<float> X;
 	vector<float> Y;

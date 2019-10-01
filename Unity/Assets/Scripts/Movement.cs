@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour
     private bool mouseClicked = false;
     private bool playing = GameManagerScript.isPlaying;
     private Vector3 pos = new Vector3(0f, 0f, 0f);
-    private Vector3 spawnPoint = new Vector3(0f, 0f, 0f);
+    public static Vector3 spawnPoint = new Vector3(0f, 0f, 0f);
 
     void Update()
     {

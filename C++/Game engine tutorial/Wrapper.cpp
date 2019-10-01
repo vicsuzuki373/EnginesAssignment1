@@ -76,3 +76,8 @@ float getAngle(int n)
 {
 	return simpleClass.getAngle(n);
 }
+
+int getSize()
+{
+	return simpleClass.getSize();
+}

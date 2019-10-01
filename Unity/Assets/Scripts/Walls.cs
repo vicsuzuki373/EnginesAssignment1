@@ -8,11 +8,6 @@ public class Walls : MonoBehaviour
     private bool mouseClicked = false;
     private float time = 0.3f;
 
-    public void Duplicate()
-    {
-        Instantiate(gameObject, new Vector3(0, 5, 0), Quaternion.identity);
-    }
-
     void Update()
     {
         if (time < 0.3f)

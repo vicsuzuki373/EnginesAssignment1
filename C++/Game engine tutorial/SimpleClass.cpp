@@ -31,6 +31,7 @@ void SimpleClass::SaveObjective(float x, float y, float z)
 
 void SimpleClass::SaveToFile()
 {
+	
 	ofstream myfile("data.txt");
 	if (myfile.is_open())
 	{
@@ -41,6 +42,10 @@ void SimpleClass::SaveToFile()
 		}
 		myfile.close();
 	}
+	X.clear();
+	Y.clear();
+	Z.clear();
+	Angle.clear();
 }
 
 void SimpleClass::LoadFile()
@@ -140,4 +145,9 @@ float SimpleClass::getZ(int n)
 float SimpleClass::getAngle(int n)
 {
 	return Angle[n];
+}
+
+int SimpleClass::getSize()
+{
+	return X.size();
 }

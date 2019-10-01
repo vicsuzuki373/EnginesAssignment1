@@ -23,6 +23,7 @@ extern "C"
 	PLUGIN_API float getY(int n);
 	PLUGIN_API float getZ(int n);
 	PLUGIN_API float getAngle(int n);
+	PLUGIN_API int getSize();
 
 #ifdef __cplusplus
 }
