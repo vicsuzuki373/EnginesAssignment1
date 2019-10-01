@@ -2,9 +2,9 @@
 
 SimpleClass simpleClass;
 
-void SaveWall(float x, float y, float z, float degrees)
+void SaveWall(float x, float y, float z, float qx, float qy, float qz, float qw)
 {
-	simpleClass.SaveWall(x, y, z, degrees);
+	simpleClass.SaveWall(x, y, z, qx, qy, qz, qw);
 }
 
 void SavePlayer(float x, float y, float z)
@@ -72,9 +72,24 @@ float getZ(int n)
 	return simpleClass.getZ(n);
 }
 
-float getAngle(int n)
+float getQuatX(int n)
 {
-	return simpleClass.getAngle(n);
+	return simpleClass.getQuatX(n);
+}
+
+float getQuatY(int n)
+{
+	return simpleClass.getQuatY(n);
+}
+
+float getQuatZ(int n)
+{
+	return simpleClass.getQuatZ(n);
+}
+
+float getQuatW(int n)
+{
+	return simpleClass.getQuatW(n);
 }
 
 int getSize()

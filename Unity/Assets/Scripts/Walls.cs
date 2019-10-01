@@ -49,6 +49,7 @@ public class Walls : MonoBehaviour
             if (Input.GetKey("x"))
             {
                 Destroy(gameObject);
+                GameManagerScript.listSize--;
             }
         }
     }

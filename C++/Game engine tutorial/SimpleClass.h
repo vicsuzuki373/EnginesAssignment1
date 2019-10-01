@@ -8,7 +8,7 @@ using namespace std;
 class PLUGIN_API SimpleClass
 {
 public:
-	void SaveWall(float x, float y, float z, float degrees);
+	void SaveWall(float x, float y, float z, float qx, float qy, float qz, float qw);
 	void SavePlayer(float x, float y, float z);
 	void SaveObjective(float x, float y, float z);
 	void SaveToFile();
@@ -22,12 +22,18 @@ public:
 	float getX(int n);
 	float getY(int n);
 	float getZ(int n);
-	float getAngle(int n);
+	float getQuatX(int n);
+	float getQuatY(int n);
+	float getQuatZ(int n);
+	float getQuatW(int n);
 	int getSize();
 private:
 	vector<float> X;
 	vector<float> Y;
 	vector<float> Z;
-	vector<float> Angle;
+	vector<float> QuatX;
+	vector<float> QuatY;
+	vector<float> QuatZ;
+	vector<float> QuatW;
 	float PX, PY, PZ, OX, OY, OZ;
 };

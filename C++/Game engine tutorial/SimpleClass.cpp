@@ -7,12 +7,15 @@ using namespace std;
 #define CHAR_BUFFER_SIZE 128
 
 
-void SimpleClass::SaveWall(float x, float y, float z,float degrees)
+void SimpleClass::SaveWall(float x, float y, float z, float qx, float qy, float qz, float qw)
 {
 	X.push_back(x);
 	Y.push_back(y);
 	Z.push_back(z);
-	Angle.push_back(degrees);
+	QuatX.push_back(qx);
+	QuatY.push_back(qy);
+	QuatZ.push_back(qz);
+	QuatW.push_back(qw);
 }
 
 void SimpleClass::SavePlayer(float x, float y, float z)
@@ -32,20 +35,24 @@ void SimpleClass::SaveObjective(float x, float y, float z)
 void SimpleClass::SaveToFile()
 {
 	
-	ofstream myfile("data.txt");
+	ofstream myfile;
+	myfile.open("data.txt", ofstream::out | ofstream::trunc);
 	if (myfile.is_open())
 	{
 		myfile << "Player " << PX << " " << PY << " " << PZ << endl;
 		myfile << "Objective " << OX << " " << OY << " " << OZ << endl;
 		for (int i = 0; i < X.size(); i++) {
-			myfile << "Wall " << X[i] << " " << Y[i] << " " << Z[i] << " " << Angle[i] << endl;
+			myfile << "Wall " << X[i] << " " << Y[i] << " " << Z[i] << " " << QuatX[i] << " " << QuatY[i] << " " << QuatZ[i] << " " << QuatW[i] << endl;
 		}
 		myfile.close();
 	}
 	X.clear();
 	Y.clear();
 	Z.clear();
-	Angle.clear();
+	QuatX.clear();
+	QuatY.clear();
+	QuatZ.clear();
+	QuatW.clear();
 }
 
 void SimpleClass::LoadFile()
@@ -56,7 +63,10 @@ void SimpleClass::LoadFile()
 	X.clear();
 	Y.clear();
 	Z.clear();
-	Angle.clear();
+	QuatX.clear();
+	QuatY.clear();
+	QuatZ.clear();
+	QuatW.clear();
 
 	while (!input.eof())
 	{
@@ -87,11 +97,17 @@ void SimpleClass::LoadFile()
 			float temp2;
 			float temp3;
 			float temp4;
-			sscanf(inputString, "Wall %f %f %f %f", &temp1, &temp2, &temp3, &temp4);
+			float temp5;
+			float temp6;
+			float temp7;
+			sscanf(inputString, "Wall %f %f %f %f %f %f %f", &temp1, &temp2, &temp3, &temp4, &temp5, &temp6, &temp7);
 			X.push_back(temp1);
 			Y.push_back(temp2);
 			Z.push_back(temp3);
-			Angle.push_back(temp4);
+			QuatX.push_back(temp4);
+			QuatY.push_back(temp5);
+			QuatZ.push_back(temp6);
+			QuatW.push_back(temp7);
 		}
 	}
 	input.close();
@@ -142,9 +158,24 @@ float SimpleClass::getZ(int n)
 	return Z[n];
 }
 
-float SimpleClass::getAngle(int n)
+float SimpleClass::getQuatX(int n)
 {
-	return Angle[n];
+	return QuatX[n];
+}
+
+float SimpleClass::getQuatY(int n)
+{
+	return QuatY[n];
+}
+
+float SimpleClass::getQuatZ(int n)
+{
+	return QuatZ[n];
+}
+
+float SimpleClass::getQuatW(int n)
+{
+	return QuatW[n];
 }
 
 int SimpleClass::getSize()

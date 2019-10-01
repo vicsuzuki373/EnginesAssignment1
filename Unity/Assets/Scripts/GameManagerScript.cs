@@ -8,7 +8,7 @@ public class GameManagerScript : MonoBehaviour
     const string DLL_NAME = "PLUGIN";
 
     [DllImport(DLL_NAME)]
-    private static extern void SaveWall(float x, float y, float z, float degrees);
+    private static extern void SaveWall(float x, float y, float z, float qx, float qy, float qz, float qw);
     [DllImport(DLL_NAME)]
     private static extern void SavePlayer(float x, float y, float z);
     [DllImport(DLL_NAME)]
@@ -36,13 +36,21 @@ public class GameManagerScript : MonoBehaviour
     [DllImport(DLL_NAME)]
     private static extern float getZ(int n);
     [DllImport(DLL_NAME)]
-    private static extern float getAngle(int n);
+    private static extern float getQuatX(int n);
+    [DllImport(DLL_NAME)]
+    private static extern float getQuatY(int n);
+    [DllImport(DLL_NAME)]
+    private static extern float getQuatZ(int n);
+    [DllImport(DLL_NAME)]
+    private static extern float getQuatW(int n);
+    [DllImport(DLL_NAME)]
+    private static extern int getSize();
 
     public GameObject player;
     public GameObject objective;
     public GameObject wall;
     public static List<GameObject> Walls = new List<GameObject>() { };
-    private int listSize = 0;
+    public static int listSize = 0;
     public static bool isPlaying = false;
 
     public void Duplicate()
@@ -73,7 +81,7 @@ public class GameManagerScript : MonoBehaviour
         SaveObjective(objective.transform.position.x, objective.transform.position.y, objective.transform.position.z);
         for(int i =0;i<listSize;i++)
         {
-            SaveWall(Walls[i].transform.position.x, Walls[i].transform.position.y, Walls[i].transform.position.z, Walls[i].transform.rotation.y);
+            SaveWall(Walls[i].transform.position.x, Walls[i].transform.position.y, Walls[i].transform.position.z, Walls[i].transform.rotation.x, Walls[i].transform.rotation.y, Walls[i].transform.rotation.z, Walls[i].transform.rotation.w);
         }
         SaveToFile();
     }
@@ -84,5 +92,20 @@ public class GameManagerScript : MonoBehaviour
         Movement.spawnPoint = new Vector3(getPX(), getPY(), getPZ());
         player.transform.SetPositionAndRotation(new Vector3(getPX(), getPY(), getPZ()),Quaternion.identity);
         objective.transform.SetPositionAndRotation(new Vector3(getOX(), getOY(), getOZ()), Quaternion.identity);
+        for(int i = 0;i<Walls.Count;i++)
+        {
+            Destroy(Walls[i]);
+        }
+        Walls.Clear();
+        listSize = getSize();
+        for (int i = 0;i<getSize();i++)
+        {
+            Quaternion temp;
+            temp.x = getQuatX(i);
+            temp.y = getQuatY(i);
+            temp.z = getQuatZ(i);
+            temp.w = getQuatW(i);
+            Walls.Add(Instantiate(wall, new Vector3(getX(i), getY(i), getZ(i)), temp));
+        }
     }
 }
