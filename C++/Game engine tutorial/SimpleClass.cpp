@@ -20,6 +20,13 @@ void SimpleClass::SaveWall(float x, float y, float z, float qx, float qy, float 
 
 void SimpleClass::SavePlayer(float x, float y, float z)
 {
+	X.clear();
+	Y.clear();
+	Z.clear();
+	QuatX.clear();
+	QuatY.clear();
+	QuatZ.clear();
+	QuatW.clear();
 	PX = x;
 	PY = y;
 	PZ = z;
@@ -46,13 +53,6 @@ void SimpleClass::SaveToFile()
 		}
 		myfile.close();
 	}
-	X.clear();
-	Y.clear();
-	Z.clear();
-	QuatX.clear();
-	QuatY.clear();
-	QuatZ.clear();
-	QuatW.clear();
 }
 
 void SimpleClass::LoadFile()
