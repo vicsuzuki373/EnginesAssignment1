@@ -8,14 +8,12 @@ public class Movement : MonoBehaviour
     public float speed = 10.0f;
 
     private bool mouseClicked = false;
-    private bool playing = GameManagerScript.isPlaying;
     private Vector3 pos = new Vector3(0f, 0f, 0f);
     public static Vector3 spawnPoint = new Vector3(0f, 0f, 0f);
 
     void Update()
     {
-        playing = GameManagerScript.isPlaying;
-        if (playing)
+        if (GameManagerScript.isPlaying)
         {
             if (Input.GetKey("w"))
             {
@@ -37,8 +35,11 @@ public class Movement : MonoBehaviour
             player.AddForce(pos, ForceMode.VelocityChange);
             pos = new Vector3(0.0f, 0.0f, 0.0f);
         }
-        if (!playing)
+        if (!GameManagerScript.isPlaying)
+        {
             player.position = spawnPoint;
+        }
+        player.position = new Vector3(player.position.x, 0, player.position.z);
     }
 
     void OnMouseDown()
@@ -48,12 +49,10 @@ public class Movement : MonoBehaviour
 
     void OnMouseDrag()
     {
-        if (!playing)
+        if (!GameManagerScript.isPlaying)
         {
             if (mouseClicked)
             {
-                player.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                player.position = new Vector3(player.position.x, 1.0f, player.position.z);
                 spawnPoint = player.position;
             }
         }
@@ -66,11 +65,11 @@ public class Movement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (playing)
+        if (GameManagerScript.isPlaying)
         {
             if (collision.gameObject.name == "Objective")
             {
-                GameManagerScript.changeGamemodeGlobal();
+                player.position = spawnPoint;
             }
         }
     }

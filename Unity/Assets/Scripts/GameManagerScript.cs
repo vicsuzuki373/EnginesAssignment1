@@ -52,9 +52,26 @@ public class GameManagerScript : MonoBehaviour
     public static List<GameObject> Walls = new List<GameObject>() { };
     public static bool isPlaying = false;
 
+    void Update()
+    {
+        for(int i=0;i<Walls.Count;i++)
+        {
+            if (Walls[i] == null)
+            {
+                Walls.RemoveAt(i);
+            }
+        }
+    }
+
     public void Duplicate()
     {
-        Walls.Add(Instantiate(wall, new Vector3(0, 5, 0), Quaternion.identity));
+        if(!isPlaying)
+            Walls.Add(Instantiate(wall, new Vector3(0, 5, 0), Quaternion.identity));
+    }
+
+    public void Stop()
+    {
+        Application.Quit();
     }
 
     public void changeGamemode()
@@ -65,46 +82,46 @@ public class GameManagerScript : MonoBehaviour
             isPlaying = true;
     }
 
-    public static void changeGamemodeGlobal()
-    {
-        if (isPlaying)
-            isPlaying = false;
-        else
-            isPlaying = true;
-    }
-
     public void SaveScene()
     {
-        SavePlayer(player.transform.position.x, player.transform.position.y, player.transform.position.z);
-        SaveObjective(objective.transform.position.x, objective.transform.position.y, objective.transform.position.z);
-        for(int i =0;i<Walls.Count;i++)
+        if (!isPlaying)
         {
-            if(Walls[i] != null)
-                SaveWall(Walls[i].transform.position.x, Walls[i].transform.position.y, Walls[i].transform.position.z, Walls[i].transform.rotation.x, Walls[i].transform.rotation.y, Walls[i].transform.rotation.z, Walls[i].transform.rotation.w);
+            SavePlayer(Movement.spawnPoint.x, Movement.spawnPoint.y, Movement.spawnPoint.z);
+            SaveObjective(objective.transform.position.x, objective.transform.position.y, objective.transform.position.z);
+            for (int i = 0; i < Walls.Count; i++)
+            {
+                if (Walls[i] != null)
+                    SaveWall(Walls[i].transform.position.x, Walls[i].transform.position.y, Walls[i].transform.position.z, Walls[i].transform.rotation.x, Walls[i].transform.rotation.y, Walls[i].transform.rotation.z, Walls[i].transform.rotation.w);
+            }
+            SaveToFile();
         }
-        SaveToFile();
     }
 
     public void LoadScene()
     {
-        LoadFile();
-        Movement.spawnPoint = new Vector3(getPX(), getPY(), getPZ());
-        player.transform.SetPositionAndRotation(new Vector3(getPX(), getPY(), getPZ()),Quaternion.identity);
-        objective.transform.SetPositionAndRotation(new Vector3(getOX(), getOY(), getOZ()), Quaternion.identity);
-        for(int i = 0;i<Walls.Count;i++)
+        if (!isPlaying)
         {
-            if (Walls[i] != null)
-                Destroy(Walls[i]);
-        }
-        Walls.Clear();
-        for (int i = 0;i<getSize();i++)
-        {
-            Quaternion temp;
-            temp.x = getQuatX(i);
-            temp.y = getQuatY(i);
-            temp.z = getQuatZ(i);
-            temp.w = getQuatW(i);
-            Walls.Add(Instantiate(wall, new Vector3(getX(i), getY(i), getZ(i)), temp));
+            LoadFile();
+            Movement.spawnPoint = new Vector3(getPX(), getPY(), getPZ());
+            player.transform.SetPositionAndRotation(new Vector3(getPX(), getPY(), getPZ()), Quaternion.identity);
+            player.transform.Rotate(new Vector3(0f, 90f, 0f));
+            objective.transform.SetPositionAndRotation(new Vector3(getOX(), getOY(), getOZ()), Quaternion.identity);
+            objective.transform.Rotate(new Vector3(0f, -90f, 0f));
+            for (int i = 0; i < Walls.Count; i++)
+            {
+                if (Walls[i] != null)
+                    Destroy(Walls[i]);
+            }
+            Walls.Clear();
+            for (int i = 0; i < getSize(); i++)
+            {
+                Quaternion temp;
+                temp.x = getQuatX(i);
+                temp.y = getQuatY(i);
+                temp.z = getQuatZ(i);
+                temp.w = getQuatW(i);
+                Walls.Add(Instantiate(wall, new Vector3(getX(i), getY(i), getZ(i)), temp));
+            }
         }
     }
 }
